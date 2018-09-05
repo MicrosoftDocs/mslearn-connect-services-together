@@ -2,7 +2,12 @@
 
 Azure lets your create applications composed of various components: web site front-ends, back-end services, and triggered functions that perform compute-on-demand services. Azure also includes various communication strategies to let these various components pass data to each other. Learn how to leverage these communication services to create scalable, efficient solutions out of testable components.
 
-This project contains the source code for the **Connect your services together** Learning Path. Each folder represents a _module_ in the learning path that you can explore.
+This project contains the source code for the **Connect your services together** Learning Path.
+
+## Modules
+Each folder represents a _module_ in the learning path that you can explore.
+
+**implement-message-workflows-with-service-bus** contains the source code for the **Implement message-based communication workflows with Azure Service Bus** module.
 
 # Contributing
 
