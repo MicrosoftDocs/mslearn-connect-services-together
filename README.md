@@ -7,8 +7,8 @@ This project contains the source code for the **Connect your services together**
 ## Modules
 Each folder represents a _module_ in the learning path that you can explore.
 
-[implement-message-workflows-with-service-bus](https://github.com/MicrosoftDocs/mslearn-connect-services-together/tree/master/%20implement-message-workflows-with-service-bus) contains the source code for the [Implement message-based communication workflows with Azure Service Bus](https://docs.microsoft.com/learn/modules/implement-message-workflows-with-service-bus/) module.
-
+| Folder | Module |
+| [implement-message-workflows-with-service-bus](https://github.com/MicrosoftDocs/mslearn-connect-services-together/tree/master/%20implement-message-workflows-with-service-bus) | Contains the source code for the [Implement message-based communication workflows with Azure Service Bus](https://docs.microsoft.com/learn/modules/implement-message-workflows-with-service-bus/) module. |
 
 
 # Contributing
