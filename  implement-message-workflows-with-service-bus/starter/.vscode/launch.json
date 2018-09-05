@@ -1,0 +1,70 @@
+{
+   // Use IntelliSense to find out which attributes exist for C# debugging
+   // Use hover for the description of the existing attributes
+   // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+   "version": "0.2.0",
+   "configurations": [
+        {
+            "name": "Launch Private Message Sender",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildprivatemessagesender",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/privatemessagesender/bin/Debug/netcoreapp2.1/privatemessagesender.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/privatemessagesender",
+            // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Launch Private Message Receiver",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildprivatemessagereceiver",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/privatemessagereceiver/bin/Debug/netcoreapp2.1/privatemessagereceiver.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/privatemessagereceiver",
+            // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Launch Performance Message Sender",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildperformancemessagesender",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/performancemessagesender/bin/Debug/netcoreapp2.1/performancemessagesender.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/performancemessagesender",
+            // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Launch Performance Message Receiver",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildperformancemessagereceiver",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/performancemessagereceiver/bin/Debug/netcoreapp2.1/performancemessagereceiver.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/performancemessagereceiver",
+            // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:pickProcess}"
+        }
+    ,]
+}
