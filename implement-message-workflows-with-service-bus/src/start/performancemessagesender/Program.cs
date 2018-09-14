@@ -6,7 +6,6 @@ using Microsoft.Azure.ServiceBus;
 
 namespace performancemessagesender
 {
-    
     class Program
     {
         const string ServiceBusConnectionString = "";
@@ -40,7 +39,5 @@ namespace performancemessagesender
 
             // Close the connection to the topic here
         }
-
-
     }
 }

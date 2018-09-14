@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
 
 namespace performancemessagesender
-{
-    
+{    
     class Program
     {
         const string ServiceBusConnectionString = "";
@@ -48,7 +47,5 @@ namespace performancemessagesender
 
             await topicClient.CloseAsync();
         }
-
-
     }
 }

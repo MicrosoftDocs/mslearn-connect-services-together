@@ -4,11 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
 
-namespace SalesForce
+namespace privatemessagesender
 {
     class Program
     {
-
         const string ServiceBusConnectionString = "";
         const string QueueName = "salesmessages";
         static IQueueClient queueClient;
@@ -46,6 +45,5 @@ namespace SalesForce
 
             await queueClient.CloseAsync();
         }
-
     }
 }
