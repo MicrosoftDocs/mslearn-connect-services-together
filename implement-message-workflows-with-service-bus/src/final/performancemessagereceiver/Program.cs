@@ -65,6 +65,5 @@ namespace performancemessagereceiver
             Console.WriteLine($"- Executing Action: {context.Action}");
             return Task.CompletedTask;
         }  
-
     }
 }

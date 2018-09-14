@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
 
-namespace SalesForce
+namespace privatemessagesender
 {
     class Program
     {
@@ -38,6 +38,5 @@ namespace SalesForce
 
             // Close the connection to the queue here
         }
-
     }
 }

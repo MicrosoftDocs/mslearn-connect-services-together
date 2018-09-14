@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
 
-namespace SalesForce
+namespace privatemessagereceiver
 {
     class Program
     {
@@ -57,6 +57,5 @@ namespace SalesForce
             Console.WriteLine($"- Executing Action: {context.Action}");
             return Task.CompletedTask;
         }   
-
     }
 }
