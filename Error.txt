@@ -1,0 +1,9 @@
+This is the error I am getting (either editing the code manually or using the final) - this is for educational purpuses. I doon't think it's acceptable... is it.
+Unhandled Exception: System.ArgumentNullException: Value cannot be null.
+Parameter name: uriString
+   at System.Uri..ctor(String uriString)
+   at Microsoft.Azure.ServiceBus.ServiceBusConnection.InitializeConnection(ServiceBusConnectionStringBuilder builder) in C:\source\azure-service-bus-dotnet\src\Microsoft.Azure.ServiceBus\ServiceBusConnection.cs:line 185
+   at Microsoft.Azure.ServiceBus.ServiceBusConnection..ctor(String namespaceConnectionString, TimeSpan operationTimeout, RetryPolicy retryPolicy)in C:\source\azure-service-bus-dotnet\src\Microsoft.Azure.ServiceBus\ServiceBusConnection.cs:line 66
+   at Microsoft.Azure.ServiceBus.QueueClient..ctor(String connectionString, String entityPath, ReceiveMode receiveMode, RetryPolicy retryPolicy) in C:\source\azure-service-bus-dotnet\src\Microsoft.Azure.ServiceBus\QueueClient.cs:line 86
+   at privatemessagesender.Program.SendSalesMessageAsync() in /home/gergo/mslearn-connect-services-together/implement-message-workflows-with-service-bus/src/final/privatemessagesender/Program.cs:line 26
+   at privatemessagesender.Program.Main(String[] args) in /home/gergo/mslearn-connect-services-together/implement-message-workflows-with-service-bus/src/final/privatemessagesender/Program.cs:line 19
