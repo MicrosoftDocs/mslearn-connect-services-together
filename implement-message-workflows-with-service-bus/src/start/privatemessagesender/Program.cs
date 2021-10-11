@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
+using Azure.Messaging.ServiceBus;
 
 namespace privatemessagesender
 {
@@ -11,7 +10,6 @@ namespace privatemessagesender
 
         const string ServiceBusConnectionString = "";
         const string QueueName = "salesmessages";
-        static IQueueClient queueClient;
 
         static void Main(string[] args)
         {
@@ -24,19 +22,21 @@ namespace privatemessagesender
 
         static async Task SendSalesMessageAsync()
         {
-            // Create a Queue Client here
+            //Create a ServiceBus Client here
 
-            // Send messages.
+            // Create a sender here
+
+            // Create and send a message here
             try
             {
-                // Create and send a message here
+
             }
             catch (Exception exception)
             {
                 Console.WriteLine($"{DateTime.Now} :: Exception: {exception.Message}");
             }
 
-            // Close the connection to the queue here
+            // Close the connection to the sender here
         }
     }
 }
