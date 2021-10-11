@@ -10,7 +10,6 @@ namespace privatemessagereceiver
 
         const string ServiceBusConnectionString = "";
         const string QueueName = "salesmessages";
-        //static IQueueClient queueClient;
 
         static void Main(string[] args)
         {
