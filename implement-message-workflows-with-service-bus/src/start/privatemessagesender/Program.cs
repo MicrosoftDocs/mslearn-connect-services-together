@@ -22,14 +22,13 @@ namespace privatemessagesender
 
         static async Task SendSalesMessageAsync()
         {
-            //Create a ServiceBus Client here
+            // Create a ServiceBus Client here
 
             // Create a sender here
 
-            // Create and send a message here
             try
             {
-
+                // Create and send a message here
             }
             catch (Exception exception)
             {
