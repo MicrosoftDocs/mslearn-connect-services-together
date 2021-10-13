@@ -34,6 +34,8 @@ namespace privatemessagereceiver
 
             // Configure the message and error handler to use
 
+            // Start processing
+
             Console.Read();
 
             // Close the processor here
