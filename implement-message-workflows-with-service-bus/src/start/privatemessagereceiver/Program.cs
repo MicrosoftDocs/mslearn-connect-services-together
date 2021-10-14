@@ -26,7 +26,7 @@ namespace privatemessagereceiver
             Console.WriteLine("======================================================");
 
 
-            // Create a ServiceBus Client that will authenticate using a connection string
+            // Create a Service Bus client that will authenticate using a connection string
 
             // Create the options to use for configuring the processor
 

@@ -22,7 +22,7 @@ namespace privatemessagesender
 
         static async Task SendSalesMessageAsync()
         {
-            // Create a ServiceBus Client here
+            // Create a Service Bus client here
 
             // Create a sender here
 
