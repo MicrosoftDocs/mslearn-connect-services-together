@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
+using Azure.Messaging.ServiceBus;
 
 namespace performancemessagereceiver
 {
@@ -11,7 +11,6 @@ namespace performancemessagereceiver
         const string ServiceBusConnectionString = "";
         const string TopicName = "salesperformancemessages";
         const string SubscriptionName = "Americas";
-        static ISubscriptionClient subscriptionClient;
 
         static void Main(string[] args)
         {
@@ -20,39 +19,38 @@ namespace performancemessagereceiver
 
         static async Task MainAsync()
         {
-            // Create a Subscription Client here
+            // Create a Service Bus client that will authenticate using a connection string
 
             Console.WriteLine("======================================================");
             Console.WriteLine("Press ENTER key to exit after receiving all the messages.");
             Console.WriteLine("======================================================");
 
-            // Register subscription message handler and receive messages in a loop
-            RegisterMessageHandler();
+            // Create the options to use for configuring the processor
+
+            // Create a processor that we can use to process the messages
+
+            // Configure the message and error handler to use
+
+            // Start processing
 
             Console.Read();
 
-            // Close the subscription here
+            // Since we didn't use the "await using" syntax here, we need to explicitly dispose the processor and client
         }
 
-        static void RegisterMessageHandler()
+        static async Task MessageHandler(ProcessMessageEventArgs args)
         {
-            throw new NotImplementedException();
+
         }
 
-        static async Task ProcessMessagesAsync(Message message, CancellationToken token)
+        static Task ErrorHandler(ProcessErrorEventArgs args)
         {
-            throw new NotImplementedException();
-        }
-
-        static Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
-        {
-            Console.WriteLine($"Message handler encountered an exception {exceptionReceivedEventArgs.Exception}.");
-            var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
+            Console.WriteLine($"Message handler encountered an exception {args.Exception}.");
             Console.WriteLine("Exception context for troubleshooting:");
-            Console.WriteLine($"- Endpoint: {context.Endpoint}");
-            Console.WriteLine($"- Entity Path: {context.EntityPath}");
-            Console.WriteLine($"- Executing Action: {context.Action}");
+            Console.WriteLine($"- Endpoint: {args.FullyQualifiedNamespace}");
+            Console.WriteLine($"- Entity Path: {args.EntityPath}");
+            Console.WriteLine($"- Executing Action: {args.ErrorSource}");
             return Task.CompletedTask;
-        }  
+        }
     }
 }

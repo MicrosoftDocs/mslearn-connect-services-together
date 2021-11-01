@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
+using Azure.Messaging.ServiceBus;
 
 namespace performancemessagesender
 {
@@ -10,7 +8,6 @@ namespace performancemessagesender
     {
         const string ServiceBusConnectionString = "";
         const string TopicName = "salesperformancemessages";
-        static ITopicClient topicClient;
 
         static void Main(string[] args)
         {
@@ -25,7 +22,9 @@ namespace performancemessagesender
 
         static async Task SendPerformanceMessageAsync()
         {
-            // Create a Topic Client here
+            // Create a Service Bus client here
+
+            // Create a sender here
 
             // Send messages.
             try
@@ -36,8 +35,6 @@ namespace performancemessagesender
             {
                 Console.WriteLine($"{DateTime.Now} :: Exception: {exception.Message}");
             }
-
-            // Close the connection to the topic here
         }
     }
 }
