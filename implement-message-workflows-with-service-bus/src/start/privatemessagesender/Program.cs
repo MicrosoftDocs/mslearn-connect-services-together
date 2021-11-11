@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
+using Azure.Messaging.ServiceBus;
 
 namespace privatemessagesender
 {
@@ -11,7 +11,6 @@ namespace privatemessagesender
 
         const string ServiceBusConnectionString = "";
         const string QueueName = "salesmessages";
-        static IQueueClient queueClient;
 
         static void Main(string[] args)
         {
