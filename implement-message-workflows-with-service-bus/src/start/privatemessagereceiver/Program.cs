@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
+using Azure.Messaging.ServiceBus;
 
 namespace privatemessagereceiver
 {
@@ -11,7 +10,6 @@ namespace privatemessagereceiver
 
         const string ServiceBusConnectionString = "";
         const string QueueName = "salesmessages";
-        static IQueueClient queueClient;
 
         static void Main(string[] args)
         {
@@ -23,38 +21,39 @@ namespace privatemessagereceiver
         static async Task ReceiveSalesMessageAsync()
         {
 
-            // Create a Queue Client here
-
             Console.WriteLine("======================================================");
             Console.WriteLine("Press ENTER key to exit after receiving all the messages.");
             Console.WriteLine("======================================================");
 
-            RegisterMessageHandler();
-        
+
+            // Create a Service Bus client that will authenticate using a connection string
+
+            // Create the options to use for configuring the processor
+
+            // Create a processor that we can use to process the messages
+
+            // Configure the message and error handler to use
+
+            // Start processing
+
             Console.Read();
 
-            // Close the queue here
+            // Close the processor here
 
         }
 
-        static void RegisterMessageHandler()
+        static async Task ProcessMessagesAsync(ProcessMessageEventArgs message)
         {
             throw new NotImplementedException();
         }
 
-        static async Task ProcessMessagesAsync(Message message, CancellationToken token)
+        static Task ExceptionReceivedHandler(ProcessErrorEventArgs err)
         {
-            throw new NotImplementedException();
-        }
-
-        static Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
-        {
-            Console.WriteLine($"Message handler encountered an exception {exceptionReceivedEventArgs.Exception}.");
-            var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
+            Console.WriteLine($"Message handler encountered an exception {err.Exception}.");
             Console.WriteLine("Exception context for troubleshooting:");
-            Console.WriteLine($"- Endpoint: {context.Endpoint}");
-            Console.WriteLine($"- Entity Path: {context.EntityPath}");
-            Console.WriteLine($"- Executing Action: {context.Action}");
+            Console.WriteLine($"- Endpoint: {err.FullyQualifiedNamespace}");
+            Console.WriteLine($"- Entity Path: {err.EntityPath}");
+            Console.WriteLine($"- Executing Action: {err.ErrorSource}");
             return Task.CompletedTask;
         }   
     }
