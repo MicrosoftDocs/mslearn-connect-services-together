@@ -42,19 +42,21 @@ namespace privatemessagereceiver
 
         }
 
-        static async Task ProcessMessagesAsync(ProcessMessageEventArgs message)
+        // handle received messages
+        static async Task MessageHandler(ProcessMessageEventArgs args)
         {
-            throw new NotImplementedException();
+            string body = args.Message.Body.ToString();
+            Console.WriteLine($"Received: {body}");
+
+            // complete the message. messages is deleted from the queue. 
+            await args.CompleteMessageAsync(args.Message);
         }
 
-        static Task ExceptionReceivedHandler(ProcessErrorEventArgs err)
+        // handle any errors when receiving messages
+        static Task ErrorHandler(ProcessErrorEventArgs args)
         {
-            Console.WriteLine($"Message handler encountered an exception {err.Exception}.");
-            Console.WriteLine("Exception context for troubleshooting:");
-            Console.WriteLine($"- Endpoint: {err.FullyQualifiedNamespace}");
-            Console.WriteLine($"- Entity Path: {err.EntityPath}");
-            Console.WriteLine($"- Executing Action: {err.ErrorSource}");
+            Console.WriteLine(args.Exception.ToString());
             return Task.CompletedTask;
-        }   
+        }
     }
 }
