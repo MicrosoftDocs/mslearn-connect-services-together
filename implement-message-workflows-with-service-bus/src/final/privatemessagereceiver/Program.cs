@@ -1,16 +1,15 @@
-﻿using System;
+using System;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
+using Azure.Messaging.ServiceBus;
 
 namespace privatemessagereceiver
 {
     class Program
     {
-        const string ServiceBusConnectionString = "";
+
+        const string ServiceBusConnectionString = "Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=AbCdEfGhIjKlMnOpQrStUvWxYz==";
         const string QueueName = "salesmessages";
-        static IQueueClient queueClient;
 
         static void Main(string[] args)
         {
@@ -21,58 +20,42 @@ namespace privatemessagereceiver
 
         static async Task ReceiveSalesMessageAsync()
         {
-
-            queueClient = new QueueClient(ServiceBusConnectionString, QueueName);
-
             Console.WriteLine("======================================================");
-            Console.WriteLine("Press ENTER key to exit after receiving all the messages.");
+            Console.WriteLine("Press ENTER on the keyboard to exit after receiving all the messages.");
             Console.WriteLine("======================================================");
 
-            RegisterMessageHandler();
-        
-            Console.Read();
+            var client = new ServiceBusClient(ServiceBusConnectionString);
 
-            await queueClient.CloseAsync();
-
-        }
-
-        static void RegisterMessageHandler()
-        {
-            // Configure the message handler options in terms of exception handling, number of concurrent messages to deliver, etc.
-            var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
+            var processorOptions = new ServiceBusProcessorOptions
             {
-                // Maximum number of concurrent calls to the callback ProcessMessagesAsync(), set to 1 for simplicity.
-                // Set it according to how many messages the application wants to process in parallel.
                 MaxConcurrentCalls = 1,
-
-                // Indicates whether the message pump should automatically complete the messages after returning from user callback.
-                // False below indicates the complete operation is handled by the user callback as in ProcessMessagesAsync().
-                AutoComplete = false
+                AutoCompleteMessages = false
             };
 
-            // Register the message handler function
-            queueClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
+            ServiceBusProcessor processor = client.CreateProcessor(QueueName, processorOptions);
 
+            await processor.StartProcessingAsync();
+
+            Console.Read();
+
+            // Since we didn't use the "await using" syntax here, we need to explicitly dispose the processor and client
+            await processor.DisposeAsync();
+            await client.DisposeAsync();
         }
 
-        static async Task ProcessMessagesAsync(Message message, CancellationToken token)
+        static async Task MessageHandler(ProcessMessageEventArgs args)
         {
-            // Process the message.
-            Console.WriteLine($"Received message: SequenceNumber:{message.SystemProperties.SequenceNumber} Body:{Encoding.UTF8.GetString(message.Body)}");
-
-            // Complete the message so that it is not received again.
-            // This can be done only if the queue Client is created in ReceiveMode.PeekLock mode (which is the default).
-            await queueClient.CompleteAsync(message.SystemProperties.LockToken);
+            Console.WriteLine($"Received message: SequenceNumber:{args.Message.SequenceNumber} Body:{args.Message.Body}");
+            await args.CompleteMessageAsync(args.Message);
         }
 
-        static Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+        static Task ErrorHandler(ProcessErrorEventArgs args)
         {
-            Console.WriteLine($"Message handler encountered an exception {exceptionReceivedEventArgs.Exception}.");
-            var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
+            Console.WriteLine($"Message handler encountered an exception {args.Exception}.");
             Console.WriteLine("Exception context for troubleshooting:");
-            Console.WriteLine($"- Endpoint: {context.Endpoint}");
-            Console.WriteLine($"- Entity Path: {context.EntityPath}");
-            Console.WriteLine($"- Executing Action: {context.Action}");
+            Console.WriteLine($"- Endpoint: {args.FullyQualifiedNamespace}");
+            Console.WriteLine($"- Entity Path: {args.EntityPath}");
+            Console.WriteLine($"- Executing Action: {args.ErrorSource}");
             return Task.CompletedTask;
         }   
     }
