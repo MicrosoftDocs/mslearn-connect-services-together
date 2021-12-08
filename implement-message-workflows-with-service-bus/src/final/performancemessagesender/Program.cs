@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
+using Azure.Messaging.ServiceBus;
 
 namespace performancemessagesender
 {    
@@ -10,7 +10,8 @@ namespace performancemessagesender
     {
         const string ServiceBusConnectionString = "";
         const string TopicName = "salesperformancemessages";
-        static ITopicClient topicClient;
+        private static ServiceBusClient s_client;
+        private static ServiceBusSender s_sender;
 
         static void Main(string[] args)
         {
@@ -25,19 +26,19 @@ namespace performancemessagesender
 
         static async Task SendPerformanceMessageAsync()
         {
-            topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
-
+            s_client = new ServiceBusClient(ServiceBusConnectionString);
             // Send messages.
             try
             {
                 string messageBody = $"Total sales for Brazil in August: $13m.";
-                var message = new Message(Encoding.UTF8.GetBytes(messageBody));
+                 s_sender = s_client.CreateSender(TopicName);
+                 ServiceBusMessage message = new ServiceBusMessage(Encoding.UTF8.GetBytes(messageBody));
 
                 // Write the body of the message to the console.
                 Console.WriteLine($"Sending message: {messageBody}");
 
                 // Send the message to the queue.
-                await topicClient.SendAsync(message);
+                await s_sender.SendMessageAsync(message);
 
             }
             catch (Exception exception)
@@ -45,7 +46,9 @@ namespace performancemessagesender
                 Console.WriteLine($"{DateTime.Now} :: Exception: {exception.Message}");
             }
 
-            await topicClient.CloseAsync();
+            await s_sender.CloseAsync();
+            Console.WriteLine("Disposing client");
+            await s_client.DisposeAsync();
         }
     }
 }
