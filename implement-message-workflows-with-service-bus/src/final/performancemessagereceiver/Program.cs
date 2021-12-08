@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
+using Azure.Messaging.ServiceBus;
 
 namespace performancemessagereceiver
 {
@@ -11,7 +11,7 @@ namespace performancemessagereceiver
         const string ServiceBusConnectionString = "";
         const string TopicName = "salesperformancemessages";
         const string SubscriptionName = "Americas";
-        static ISubscriptionClient subscriptionClient;
+        private static ServiceBusClient s_client;
 
         static void Main(string[] args)
         {
@@ -20,50 +20,55 @@ namespace performancemessagereceiver
 
         static async Task MainAsync()
         {
-            subscriptionClient = new SubscriptionClient(ServiceBusConnectionString, TopicName, SubscriptionName);
+             s_client = new ServiceBusClient(ServiceBusConnectionString);
 
             Console.WriteLine("======================================================");
             Console.WriteLine("Press ENTER key to exit after receiving all the messages.");
             Console.WriteLine("======================================================");
 
-            // Register subscription message handler and receive messages in a loop
-            RegisterMessageHandler();
+             
+
+
+            await ReceiveMessagesAsync(SubscriptionName);
 
             Console.Read();
+             Console.WriteLine("=======================================================================");
+            Console.WriteLine("Completed Receiving all messages. Disposing clients and deleting topic.");
+            Console.WriteLine("=======================================================================");
 
-            await subscriptionClient.CloseAsync();
+            
+            Console.WriteLine("Disposing client");
+            await s_client.DisposeAsync();
         }
-
-        static void RegisterMessageHandler()
+        private static async Task ReceiveMessagesAsync(string subscriptionName)
         {
-            // Configure the message handler.
-            var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
+            await using ServiceBusReceiver subscriptionReceiver = s_client.CreateReceiver(
+                TopicName,
+                subscriptionName,
+                new ServiceBusReceiverOptions { ReceiveMode = ServiceBusReceiveMode.ReceiveAndDelete });
+
+            Console.WriteLine($"==========================================================================");
+            Console.WriteLine($"{DateTime.Now} :: Receiving Messages From Subscription: {subscriptionName}");
+            int receivedMessageCount = 0;
+            while (true)
             {
-                MaxConcurrentCalls = 1,
-                AutoComplete = false
-            };
+                var receivedMessage = await subscriptionReceiver.ReceiveMessageAsync(TimeSpan.FromSeconds(1));
+                if (receivedMessage != null)
+                {
+                    Console.WriteLine($"Received sale performance message: SequenceNumber:{receivedMessage.SequenceNumber} Body:{Encoding.UTF8.GetString(receivedMessage.Body)}");
 
-            // Register the function that processes messages.
-            subscriptionClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
+                    receivedMessageCount++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            Console.WriteLine($"{DateTime.Now} :: Received '{receivedMessageCount}' Messages From Subscription: {subscriptionName}");
+            Console.WriteLine($"==========================================================================");
+            await subscriptionReceiver.CloseAsync();
         }
-
-        static async Task ProcessMessagesAsync(Message message, CancellationToken token)
-        {
-            // Display the message.
-            Console.WriteLine($"Received sale performance message: SequenceNumber:{message.SystemProperties.SequenceNumber} Body:{Encoding.UTF8.GetString(message.Body)}");
-
-            await subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
-        }
-
-        static Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
-        {
-            Console.WriteLine($"Message handler encountered an exception {exceptionReceivedEventArgs.Exception}.");
-            var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
-            Console.WriteLine("Exception context for troubleshooting:");
-            Console.WriteLine($"- Endpoint: {context.Endpoint}");
-            Console.WriteLine($"- Entity Path: {context.EntityPath}");
-            Console.WriteLine($"- Executing Action: {context.Action}");
-            return Task.CompletedTask;
-        }  
+          
     }
 }
